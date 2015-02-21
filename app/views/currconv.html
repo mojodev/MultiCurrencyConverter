@@ -1,0 +1,43 @@
+<h2>Currency Rate</h2>
+    <h5>Multiple Currency, Cross Comparision</h5>
+    <hr/>
+    <form name="curr">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="col-sm-12">
+                    <select ng-options=" getBaseCurrency(code, value) for (code, value) in currencyValues" ng-model="fromCurrency">
+                        <option value="">-- Please Select Base Currency --</option>
+                    </select>
+                </div>
+                <div class="col-sm-12" style="margin-top:10px;">
+                    <input ng-model="fromVal" placeholder="please enter value" type="number" min="0" name="currVal">
+                    <div style="color:red;" ng-show="curr.currVal.$invalid">Invalid:
+                        <span ng-show="curr.currVal.$error.number">Please enter number.</span>
+                        <span ng-show="curr.currVal.$error.min">Please enter number greater or equal to 0.</span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <!-- <div class="col-sm-12"> -->
+                <tags-input ng-model="tags" display-property="name" add-from-autocomplete-only="true" placeholder="Add country">
+                    <auto-complete source="loadCountry($query)" max-results-to-show="168" highlight-matched-text="true" allow-duplicate-tags="true" min-length="1" filter-used-tags="true"></auto-complete>
+                </tags-input>
+                <!--    </div> -->
+
+                <div class="col-sm-12" style="float: none;margin:0 auto;">
+                    <table class="table table-striped">
+                        <tr>
+                            <th>Country</th>
+                            <th>Converted Currency</th>
+                        </tr>
+                        <tr ng-repeat="tag in tags">
+                            <td>{{tag.name}}</td>
+                            <td>{{fromVal / fromCurrency * currencyValues[tag.id] || 0}} </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
